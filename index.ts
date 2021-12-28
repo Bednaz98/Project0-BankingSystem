@@ -54,7 +54,7 @@ app.post('/Clients/:FirstName/:LastName', async (req,res)=>{
         res.send({'return':TempClient});
     } catch (error) {
         res.status(400)
-        res.send(JSON.stringify(error));
+        res.send(error.name+"  "+error.message);
     }
 });
 
@@ -66,8 +66,8 @@ app.get('/Clients/:ClientID', async (req,res)=>{
         res.status(200)
         res.send({'return':TempClient});
     } catch (error) {
-        res.status(400)
-        res.send(JSON.stringify(error));
+        res.status(404)
+        res.send(error.name+"  "+error.message);
     }
 });
 
@@ -76,11 +76,11 @@ app.delete('/Clients/:ClientID', async (req,res)=>{
     try {
         const {ClientID} = req.params;
         const TempClient:Client =await com.DeleteClient(ClientID);
-        res.status(200)
+        res.status(205)
         res.send({'return':TempClient});
     } catch (error) {
-        res.status(400)
-        res.send(JSON.stringify(error));
+        res.status(405)
+        res.send(error.name+"  "+error.message);
     }
 });
 
@@ -92,8 +92,8 @@ app.put('/Clients/:ClientID/:NewFirstName/:NewLastName',async (req,res)=>{
         res.status(200)
         res.send({'return':TempClient});
     } catch (error) {
-        res.status(400)
-        res.send(JSON.stringify(error));
+        res.status(404)
+        res.send(error.name+"  "+error.message);
     }
 });
 
@@ -102,11 +102,11 @@ app.post('/Clients/:ClientID/Accounts/:AccountName',async (req,res)=>{
     try {
         const {ClientID,AccountName} = req.params;
         const TempClient:Client =await com.CreateNewClientAccount(ClientID, AccountName);
-        res.status(200)
+        res.status(201)
         res.send({'return':TempClient});
     } catch (error) {
         res.status(400)
-        res.send(JSON.stringify(error));
+        res.send(error.name+"  "+error.message);
     }
 });
 
@@ -118,8 +118,8 @@ app.get('/Clients/:ClientID/Accounts/:AccountIndex', async (req,res)=>{
         res.status(200)
         res.send({'return':TempAccount});
     } catch (error) {
-        res.status(400)
-        res.send(JSON.stringify(error));
+        res.status(404)
+        res.send(error.name+"  "+error.message);
     }
 });
 
@@ -128,11 +128,11 @@ app.delete('/Clients/:ClientID/Accounts/:AccountIndex', async (req,res)=>{
     try {
         const {ClientID,AccountIndex} = req.params;
         const TempClient:Client = await com.DeleteClientAccount(ClientID, Number(AccountIndex));
-        res.status(200)
+        res.status(205)
         res.send(JSON.stringify({'return':TempClient}));
     } catch (error) {
-        res.status(400)
-        res.send(JSON.stringify(error));
+        res.status(405)
+        res.send(error.name+"  "+error.message);
     }
 });
 
@@ -144,7 +144,7 @@ app.get('/Clients', async (req,res)=>{
         res.send({'return':TempClientArray});
     } catch (error) {
         res.status(400)
-        res.send(JSON.stringify(error));
+        res.send(error.name+"  "+error.message);
     }
 });
 
@@ -159,7 +159,7 @@ app.get('/Clients/:ClientID/Accounts', async (req,res)=>{
             res.send(ReturnString);
         } catch (error) {
             res.status(400)
-            res.send(JSON.stringify(error));
+            res.send(error.name+"  "+error.message);
         }
 
     }
@@ -171,34 +171,41 @@ app.get('/Clients/:ClientID/Accounts', async (req,res)=>{
             res.send({'return':TempAccounts});
         } catch (error) {
             res.status(400)
-            res.send(JSON.stringify(error));
+            res.send(error.name+"  "+error.message);
         }
     }
 });
 
 //patch deposite to account
-app.patch('/Clients/:ClientID/Accounts/:AccountIndex/Deposite/:Amount', async (req,res)=>{
+app.patch('/Clients/:ClientID/Accounts/:AccountIndex/Deposite', async (req,res)=>{
     try {
-        const {ClientID, AccountIndex, Amount} = req.params;
+        const {ClientID, AccountIndex} = req.params;
+        const {Amount} = req.body;
         const TempClient:Client = await com.Despoite(ClientID, Number(AccountIndex), Number(Amount));
         res.status(200)
         res.send({'return':TempClient});
     } catch (error) {
         res.status(400)
-        res.send(JSON.stringify(error));
+        res.send(error.name+"  "+error.message);
     }
 });
 
 //patch withdraw from account
-app.patch('/Clients/:ClientID/Accounts/:AccountIndex/Withdraw/:Amount', async (req,res)=>{
+app.patch('/Clients/:ClientID/Accounts/:AccountIndex/Withdraw', async (req,res)=>{
     try {
-        const {ClientID, AccountIndex, Amount} = req.params;
+        const {ClientID, AccountIndex} = req.params;
+        const {Amount} = req.body;
         const TempClient:Client =await com.Withdraw(ClientID, Number(AccountIndex), Number(Amount));
         res.status(200)
+        console.log("Withdraw Successful return")
         res.send({'return':TempClient});
     } catch (error) {
-        res.status(400)
-        res.send(JSON.stringify(error));
+        console.log("Withdraw error return")
+        if(Error(error).message.includes("Balance") || Error(error).message.includes("overdraft") ){
+            res.status(422)
+        }
+        res.status(404)
+        res.send(error.name+"  "+error.message);
     }
 });
 
@@ -211,7 +218,7 @@ app.put('/Clients/:ClientID/Accounts/:AccountIndex/:NewName', async (req,res)=>{
         res.send({'return':TempClient});
     } catch (error) {
         res.status(400)
-        res.send(JSON.stringify(error));
+        res.send(error.name+"  "+error.message);
     }
 });
 

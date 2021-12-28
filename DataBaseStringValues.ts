@@ -2,7 +2,7 @@
 const process = require('process');
 
 export function GetPrimaryConnectionKey():string{
-    return process.env.CD_PK;
+    return String(process.env.CD_PK);
 }
 
 export function GetDataBaseName():string{

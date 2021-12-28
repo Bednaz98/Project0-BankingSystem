@@ -1,7 +1,7 @@
 
 
 export function GetPrimaryConnectionKey():string{
-    return String(process.env.CD_PK);
+    return process.env.CD_PK;
 }
 
 export function GetDataBaseName():string{

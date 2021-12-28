@@ -1,5 +1,5 @@
 // Needed for Cosmose code to work
-import {CosmosClient, ItemResponse}  from '@azure\\cosmos';
+import {CosmosClient, ItemResponse}  from '@azure/cosmos';
 import {CallThrowError, print} from './Util';
 // Get variables needed for server connection
 import {GetPrimaryConnectionKey, GetDataBaseName, GetContainerName} from "./DataBaseStringValues";

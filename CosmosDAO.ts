@@ -9,7 +9,7 @@ import {Client, Account} from "./Entities";
 
 
 // Initlize Data Base Connection
-const client = new CosmosClient(  String(GetPrimaryConnectionKey())  ); // Primary key from Cosmose
+const client = new CosmosClient(  String(process.env.CD_PK)  ); // Primary key from Cosmose
 const database = client.database( GetDataBaseName() ); // Name of th DataBase
 const DataContainer = database.container( GetContainerName() ); // Container name
 

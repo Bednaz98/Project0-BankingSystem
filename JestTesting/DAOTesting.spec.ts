@@ -12,7 +12,7 @@ const TestingID:string = 'TESTINGID';
 describe("Test", ()=>{
 
     it("Check Primary Key", async ()=>{
-        const Temp:string = GetPrimaryConnectionKey();
+        const Temp:string = String(GetPrimaryConnectionKey());
         expect(Temp).toBeTruthy()
     })
 

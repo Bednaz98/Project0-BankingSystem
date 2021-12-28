@@ -9,7 +9,8 @@ import {Client, Account} from "./Entities";
 
 
 // Initlize Data Base Connection
-const client = new CosmosClient(  String(process.env.CD_PK)  ); // Primary key from Cosmose
+let TempString:string = String(process.env.CD_PK) 
+const client = new CosmosClient( TempString); // Primary key from Cosmose
 const database = client.database( GetDataBaseName() ); // Name of th DataBase
 const DataContainer = database.container( GetContainerName() ); // Container name
 

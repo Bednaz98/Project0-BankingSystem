@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+        "outDir": "dist",
+        "esModuleInterop":true,
+        //"target": "ES6",
+    }
+}
